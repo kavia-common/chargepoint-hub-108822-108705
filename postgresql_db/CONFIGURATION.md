@@ -13,9 +13,17 @@ Variables
 Usage
 - Run startup.sh to initialize and start local Postgres on the configured port.
 - The script will also write db_visualizer/postgres.env for the Node.js viewer.
+- Apply schema/migrations:
+  - Local: ./scripts/migrate_local.sh
+  - Supabase: ./scripts/migrate_supabase.sh (requires supabase CLI)
 - Point backend_api to either:
   - SUPABASE_DB_URL (recommended if you use Supabase), or
   - POSTGRES_URL/POSTGRES_* (for pure local DB).
+
+Notes
+- The schema is Supabase-first: when running on Supabase, reference auth.users (UUID).
+- Locally, a minimal public.users table is created to mimic auth.users so the app runs without Supabase.
+- Geospatial: If PostGIS is available, geom column and GIST index are active; otherwise, code uses lat/long btree indexes.
 
 Security
 - Do not commit real credentials. Use this file as a template for your .env.
